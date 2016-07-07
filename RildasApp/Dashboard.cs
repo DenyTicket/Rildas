@@ -436,17 +436,56 @@ namespace RildasApp
             }
         }
 
+        public void MakeStates()
+        {
+            metroTabControl1.SelectedTab.Controls.Clear();
+            const int imageSize = 204;
+            const int rightPadding = 20;
+            const int downPadding = 70;
+            int animesInRow = (metroTabControl1.SelectedTab.Width / (imageSize + rightPadding));
+            List<Anime> animeList = Global.GetAnimes();
+
+            Panel panel = new Panel();
+            panel.BackColor = Color.FromArgb(17, 17, 17);
+            panel.Size = new Size(1400, 600);
+            panel.AutoScroll = true;
+            panel.Location = new Point(0, 0);
+
+            metroTabControl1.SelectedTab.Controls.Add(panel);
+
+
+            for (int i = 0; i < animeList.Count; ++i)
+            {
+                
+                int positionY = (((imageSize + rightPadding) * i) / panel.Width) * (imageSize + downPadding);
+                int positionX = (i % animesInRow) * (imageSize + rightPadding);
+                PictureBox picture = new PictureBox();
+                Label label = new Label();
+
+                picture.Size = new Size(imageSize, imageSize);
+                picture.Location = new Point(positionX, positionY);
+                picture.Load("http://anime.rildas.cz/" + animeList[i].animelist_img);
+                panel.Controls.Add(picture);
+
+                label.Text = animeList[i].name + "\r\n" + "0" + "/" + animeList[i].ep_count;
+                label.Location = new Point(picture.Location.X, picture.Location.Y + picture.Height + 5);
+                label.Size = new Size(picture.Width, 60);
+                label.ForeColor = Color.White;
+                panel.Controls.Add(label);
+            }
+        }
+
         private void metroTabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (metroTabControl1.SelectedIndex == 2)
             {
                 cb2Anime.Items.Clear();
                 List<Anime> animes = Global.GetAnimes();
-                foreach(Anime anime in animes)
+                foreach (Anime anime in animes)
                 {
                     if (!cb2DoneAnime.Checked && anime.status != Anime.Status.PŘEKLÁDÁ_SE) continue;
                     cb2Anime.Items.Add(anime.name);
-                }                
+                }
             }
             if (metroTabControl1.SelectedTab.Name == "_publish")
             {
@@ -458,6 +497,10 @@ namespace RildasApp
                         publish_AnimeComboBox.Items.Add(anime.name);
                     }
                 }
+            }
+            if (metroTabControl1.SelectedTab.Name == "_states")
+            {
+                MakeStates();
             }
         }
 
