@@ -62,6 +62,7 @@ namespace RildasApp
             _calendar.Controls.Add(myPanel);
             table = new Timetable.Timetable(myPanel, toolTip1, myPanel.Width - 1, myPanel.Height - 20);
             /*--------------*/
+            /*Vytvořeno Danem*/
             /*Panel pro zveřejnění*/
             myPanel2 = new MyPanel();
             myPanel2.Location = new Point(19, 99);
